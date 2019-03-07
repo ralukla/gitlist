@@ -1,0 +1,6 @@
+module Pods_GitList {
+  umbrella header "Pods-GitList-umbrella.h"
+
+  export *
+  module * { export * }
+}
