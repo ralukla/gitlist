@@ -15,10 +15,10 @@ class ListViewModel: NSObject {
     
     func getArray(completion: @escaping (() -> Void)) {
         
-//        if array != nil && array!.count != 0 {
-//            return
-//        }
-//        
+        if array != nil && array!.count != 0 {
+            return
+        }
+        
         let networkManager = NetworkManager()
         networkManager.fetchTrendingList { (projects) in
             self.array = projects
@@ -36,7 +36,7 @@ class ListViewModel: NSObject {
         array?.removeAll()
         
         for project in defaultList! {
-            if project.name.lowercased().contains(searchText.lowercased()) || project.desc.lowercased().contains(searchText.lowercased()) {
+            if project.name.lowercased().contains(searchText.lowercased()) || project.fullName.lowercased().contains(searchText.lowercased()) || project.desc.lowercased().contains(searchText.lowercased()) {
                 array?.append(project)
             }
         }

@@ -7,24 +7,50 @@
 //
 
 import UIKit
+import Alamofire
 
 class DetailsViewController: UIViewController {
 
+    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    var gitProject: GitProject! = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        title = gitProject?.name
+        
+        loadInfo()
     }
-    */
-
+    
+    // MARK: - Helpers
+    
+    func loadInfo() {
+        
+        usernameLabel.text = gitProject.owner.userName
+        descriptionLabel.text = gitProject.desc
+        
+        let url = URL(string: gitProject.owner.avatarUrl)!
+        avatarImageView.image = UIImage(named: "profile")!
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2.0
+        avatarImageView.clipsToBounds = true
+        
+        Alamofire.request(url).responseData { (response) in
+            guard response.error == nil else {
+                return
+            }
+            
+            guard let data = response.data else {
+                return
+            }
+            
+            self.avatarImageView.image = UIImage(data: data)
+        }
+    }
 }

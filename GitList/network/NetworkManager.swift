@@ -19,7 +19,7 @@ class NetworkManager: NSObject {
         }
         Alamofire.request(url,
                           method: .get,
-                          parameters: ["q": "created:>2019-03-01",
+                          parameters: ["q": "created:>2018-03-01",
                                        "sort": "stars",
                                        "order": "desc"])
             .validate()

@@ -33,6 +33,22 @@ class ListViewController: UIViewController {
         })
     }
 
+     // MARK: - Navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        guard segue.identifier == "detailsSegue" else {
+            return
+        }
+        
+        let destinationVC = segue.destination as! DetailsViewController
+        
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            return
+        }
+        
+        destinationVC.gitProject = viewModel?.array![indexPath.row]
+     }
+
 }
 
 extension ListViewController: UITableViewDataSource {
@@ -53,12 +69,12 @@ extension ListViewController: UITableViewDataSource {
         
         cell.projectStars.text = NumberFormatter.localizedString(from: NSNumber(value: project!.stars), number: NumberFormatter.Style.decimal)
         
-        cell.projectName.text = project!.name
+        cell.projectName.text = project!.fullName
         cell.projectName.textColor = .black
         
         if (searchBar.text?.count)! >= 3 {
-            let range = (project!.name.lowercased() as NSString).range(of: (searchBar.text?.lowercased())!)
-            let attribute = NSMutableAttributedString.init(string: project!.name)
+            let range = (project!.fullName.lowercased() as NSString).range(of: (searchBar.text?.lowercased())!)
+            let attribute = NSMutableAttributedString.init(string: project!.fullName)
             attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.orange, range: range)
             
             cell.projectName.attributedText = attribute
