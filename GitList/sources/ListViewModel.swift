@@ -10,34 +10,34 @@ import UIKit
 
 class ListViewModel: NSObject {
 
-    var array: [GitProject]?
-    var defaultList: [GitProject]?
+    var projectsList: [GitProject]?
+    var defaultProjectList: [GitProject]?
     
-    func getArray(completion: @escaping (() -> Void)) {
+    func getProjectList(completion: @escaping (() -> Void)) {
         
-        if array != nil && array!.count != 0 {
+        if projectsList != nil && projectsList!.count != 0 {
             return
         }
         
         let networkManager = NetworkManager()
         networkManager.fetchTrendingList { (projects) in
-            self.array = projects
-            self.defaultList = self.array
+            self.projectsList = projects
+            self.defaultProjectList = self.projectsList
             completion()
         }
     }
     
-    func fullList() {
-        array = defaultList
+    func getDefaultProjectList() {
+        projectsList = defaultProjectList
     }
     
     func search(searchText: String) {
         
-        array?.removeAll()
+        projectsList?.removeAll()
         
-        for project in defaultList! {
+        for project in defaultProjectList! {
             if project.name.lowercased().contains(searchText.lowercased()) || project.fullName.lowercased().contains(searchText.lowercased()) || project.desc.lowercased().contains(searchText.lowercased()) {
-                array?.append(project)
+                projectsList?.append(project)
             }
         }
     }

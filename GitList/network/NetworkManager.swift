@@ -41,4 +41,31 @@ class NetworkManager: NSObject {
                 completion(projects)
         }
     }
+    
+    func fetchReadMe(owner: String, repo: String, completion: @escaping (Readme?) -> Void) {
+        
+        guard let url = URL(string: "https://api.github.com/repos/" + owner + "/" + repo + "/readme") else {
+            completion(nil)
+            return
+        }
+        Alamofire.request(url,
+                          method: .get)
+            .validate()
+            .responseJSON { response in
+                guard response.result.isSuccess else {
+                    print("Error while fetching readme: \(String(describing: response.result.error))")
+                    completion(nil)
+                    return
+                }
+                
+                guard let value = response.result.value as? [String: Any] else {
+                        print("Malformed data received from fetchReadMe service")
+                        completion(nil)
+                        return
+                }
+                
+                let readme =  Readme(jsonData: value)
+                completion(readme)
+        }
+    }
 }

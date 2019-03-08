@@ -19,15 +19,7 @@ class GitProjectOwner: NSObject {
     }
 
     init(jsonData: [String: Any]) {
-        
-        userName = ""
-        if jsonData["login"] != nil {
-            userName = jsonData["login"] as! String
-        }
-
-        avatarUrl = ""
-        if jsonData["avatar_url"] != nil {
-            avatarUrl = jsonData["avatar_url"] as! String
-        }
+        userName = jsonData["login"] as? String ?? ""
+        avatarUrl = jsonData["avatar_url"] as? String ?? ""
     }
 }

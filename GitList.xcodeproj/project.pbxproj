@@ -20,6 +20,7 @@
 		D2BB94012229631700805812 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2BB94002229631700805812 /* Assets.xcassets */; };
 		D2BB94042229631700805812 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2BB94022229631700805812 /* LaunchScreen.storyboard */; };
 		D2BB94102229693700805812 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BB940F2229693700805812 /* ListViewController.swift */; };
+		D2FED9F722329227001B0C1C /* Readme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FED9F622329227001B0C1C /* Readme.swift */; };
 		FF18EEFCB48D2E10AD2E21A6 /* libPods-GitList.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8EE6E6AF5FA91E61961089A /* libPods-GitList.a */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 		D2BB94032229631700805812 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2BB94052229631700805812 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2BB940F2229693700805812 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		D2FED9F622329227001B0C1C /* Readme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			children = (
 				D21A8A1F222FDA3A004707A8 /* GitProject.swift */,
 				D2701C5B22314AE900B5BF8D /* GitProjectOwner.swift */,
+				D2FED9F622329227001B0C1C /* Readme.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 				D2BB93FA2229631600805812 /* AppDelegate.swift in Sources */,
 				D2701C5C22314AE900B5BF8D /* GitProjectOwner.swift in Sources */,
 				D21A8A23222FE76F004707A8 /* ProjectsTableViewCell.swift in Sources */,
+				D2FED9F722329227001B0C1C /* Readme.swift in Sources */,
 				D21A8A20222FDA3A004707A8 /* GitProject.swift in Sources */,
 				D21A8A2D22300F20004707A8 /* NetworkManager.swift in Sources */,
 				D21A8A2A222FF1C5004707A8 /* DetailsViewModel.swift in Sources */,
