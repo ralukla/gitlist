@@ -12,16 +12,14 @@ import Alamofire
 class NetworkManager: NSObject {
     
     func fetchTrendingList(completion: @escaping ([GitProject]?) -> Void) {
-        
-        guard let url = URL(string: "https://api.github.com/search/repositories") else {
+        guard let url = URL(string: "https://github-trending-api.now.sh/repositories") else {
             completion(nil)
             return
         }
         Alamofire.request(url,
                           method: .get,
-                          parameters: ["q": "created:>2018-03-01",
-                                       "sort": "stars",
-                                       "order": "desc"])
+                          parameters: ["language": "",
+                                       "since": "daily"])
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
@@ -30,8 +28,7 @@ class NetworkManager: NSObject {
                     return
                 }
                 
-                guard let value = response.result.value as? [String: Any],
-                    let rows = value["items"] as? [[String: Any]] else {
+                guard let rows = response.result.value as? [[String: Any]] else {
                         print("Malformed data received from fetchTrendingList service")
                         completion(nil)
                         return
@@ -39,6 +36,32 @@ class NetworkManager: NSObject {
                 
                 let projects = rows.compactMap { jsonData in return GitProject(jsonData: jsonData) }
                 completion(projects)
+        }
+    }
+    
+    func fetchOwner(gitProject: GitProject, completion: @escaping (GitProjectOwner?) -> Void) {
+        guard let url = URL(string: "https://api.github.com/users/" + gitProject.author) else {
+            completion(nil)
+            return
+        }
+        Alamofire.request(url,
+                          method: .get)
+            .validate()
+            .responseJSON { response in
+                guard response.result.isSuccess else {
+                    print("Error while fetching owner: \(String(describing: response.result.error))")
+                    completion(nil)
+                    return
+                }
+                
+                guard let value = response.result.value as? [String: Any] else {
+                    print("Malformed data received from fetchOwner service")
+                    completion(nil)
+                    return
+                }
+                
+                let owner = GitProjectOwner(jsonData: value)
+                completion(owner)
         }
     }
     

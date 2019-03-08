@@ -11,6 +11,7 @@ import UIKit
 class GitProject: NSObject {
 
     var name: String = ""
+    var author: String = ""
     var fullName: String = ""
     var stars: Int = 0
     var forks: Int = 0
@@ -19,8 +20,9 @@ class GitProject: NSObject {
     var owner: GitProjectOwner = GitProjectOwner()
     var readme: Readme = Readme()
     
-    init(theName: String, theFullName: String, theStars: Int, theForks: Int, theDescription: String, theOwner: GitProjectOwner, theReadme: Readme) {
+    init(theName: String, theAuthor: String, theFullName: String, theStars: Int, theForks: Int, theDescription: String, theOwner: GitProjectOwner, theReadme: Readme) {
         name = theName
+        author = theAuthor
         fullName = theFullName
         stars = theStars
         forks = theForks
@@ -31,15 +33,18 @@ class GitProject: NSObject {
     
     init(jsonData: [String: Any]) {
         name = jsonData["name"] as? String ?? ""
-        fullName = jsonData["full_name"] as? String ?? ""
+        author = jsonData["author"] as? String ?? ""
+        fullName = author + " \\ " + name
         desc = jsonData["description"] as? String ?? ""
-        stars = jsonData["stargazers_count"] as? Int ?? 0
-        forks = jsonData["forks_count"] as? Int ?? 0
-        
-        owner = GitProjectOwner(jsonData: jsonData["owner"] as! [String : Any])
+        stars = jsonData["stars"] as? Int ?? 0
+        forks = jsonData["forks"] as? Int ?? 0
     }
     
     func linkReadme(_ theReadme: Readme) {
         readme = theReadme
+    }
+    
+    func linkOwner(_ theOwner: GitProjectOwner) {
+        owner = theOwner
     }
 }

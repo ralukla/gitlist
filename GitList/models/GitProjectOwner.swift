@@ -22,4 +22,8 @@ class GitProjectOwner: NSObject {
         userName = jsonData["login"] as? String ?? ""
         avatarUrl = jsonData["avatar_url"] as? String ?? ""
     }
+    
+    func isNil() -> Bool {
+        return userName != "" ? false : true
+    }
 }

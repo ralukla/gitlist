@@ -43,8 +43,10 @@ class DetailsViewController: UIViewController {
         
         title = gitProject?.name
         
-        loadInfo()
-        loadWebPage()
+        viewModel?.getOwner(gitProject: gitProject, completion: { (owner) in
+            self.loadInfo()
+            self.loadWebPage()
+        })
     }
     
     // MARK: - Helpers

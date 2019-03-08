@@ -21,9 +21,6 @@ class Readme: NSObject {
     }
     
     func isNil() -> Bool {
-        if url != "" {
-            return false
-        }
-        return true
+        return url != "" ? false : true
     }
 }
