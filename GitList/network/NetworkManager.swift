@@ -11,15 +11,37 @@ import Alamofire
 
 class NetworkManager: NSObject {
     
-    func fetchTrendingList(completion: @escaping ([GitProject]?) -> Void) {
+    enum SinceValue: Int {
+        case daily
+        case weekly
+        case monthly
+        
+        var name: String {
+            switch self {
+            case .daily:
+                return "daily"
+            case .weekly:
+                return "weekly"
+            case .monthly:
+                return "monthly"
+            }
+        }
+    }
+    
+    func fetchTrendingList(since: Int, completion: @escaping ([GitProject]?) -> Void) {
         guard let url = URL(string: "https://github-trending-api.now.sh/repositories") else {
             completion(nil)
             return
         }
+        
+        guard let sinceParameter = SinceValue(rawValue: since) else {
+            return
+        }
+        
         Alamofire.request(url,
                           method: .get,
                           parameters: ["language": "",
-                                       "since": "daily"])
+                                       "since": sinceParameter.name])
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {

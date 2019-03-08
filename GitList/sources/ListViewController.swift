@@ -17,8 +17,11 @@ class ListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var tableViewBottomContraint: NSLayoutConstraint!
     
     var viewModel: ListViewModel?
+    var segmentedSelected = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +36,25 @@ class ListViewController: UIViewController {
         
         tableView.tableFooterView = UIView()
         
-        viewModel?.getProjectList(completion: {
+        viewModel?.getProjectList(since: segmentedSelected, completion: {
             self.tableView.reloadData()
         })
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // MARK: - Action
+    @IBAction func segmentedControlAction(_ sender: Any) {
+        guard segmentedSelected != segmentedControl.selectedSegmentIndex else {
+            return
+        }
+        segmentedSelected = segmentedControl.selectedSegmentIndex
+        
+        viewModel?.getProjectList(since: segmentedSelected) {
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
 
      // MARK: - Navigation
@@ -52,6 +71,23 @@ class ListViewController: UIViewController {
         
         destinationVC.gitProject = viewModel?.projectsList![indexPath.row]
      }
+    
+    // MARK: - Keyboard Notifications
+    @objc func keyboardWillShow(notification: Notification) {
+        let keyboardHeight = (notification.userInfo? [UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
+        
+        tableViewBottomContraint.constant = keyboardHeight!
+        UIView.animate(withDuration: 0.5){
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        tableViewBottomContraint.constant = 0
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension ListViewController: UITableViewDataSource {

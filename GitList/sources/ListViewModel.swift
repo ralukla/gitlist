@@ -12,15 +12,17 @@ class ListViewModel: NSObject {
 
     var projectsList: [GitProject]?
     var defaultProjectList: [GitProject]?
+    var lastSince: Int = -1
     
-    func getProjectList(completion: @escaping (() -> Void)) {
+    func getProjectList(since: Int, completion: @escaping (() -> Void)) {
         
-        if projectsList != nil && projectsList!.count != 0 {
+        guard since != lastSince else {
             return
         }
         
+        lastSince = since
         let networkManager = NetworkManager()
-        networkManager.fetchTrendingList { (projects) in
+        networkManager.fetchTrendingList(since: since) { (projects) in
             self.projectsList = projects
             self.defaultProjectList = self.projectsList
             completion()
